@@ -9,6 +9,11 @@ export default function useSearchBox() {
   const debouncedFetch = useMemo(
     () =>
       debounce(async (query: string) => {
+        if (query === "") {
+          setResults([]);
+          setIsLoading(false);
+          return;
+        }
         const response = await fetch(
           "http://localhost:8080/search?" +
             new URLSearchParams({
