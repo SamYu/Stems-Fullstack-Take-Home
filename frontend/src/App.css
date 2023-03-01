@@ -1,0 +1,15 @@
+.App {
+  display: flex;
+  justify-content: center;
+  margin-top: 30vh;
+  text-align: center;
+}
+
+.searchBoxContainer {
+  margin: 50px;
+  width: 350px;
+}
+
+.searchTitle {
+  margin-bottom: 10px;
+}
