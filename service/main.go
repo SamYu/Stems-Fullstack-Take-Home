@@ -10,6 +10,7 @@ import (
 )
 
 const MAX_RESULTS = 30
+const DATA_FILE_PATH = "./data/"
 
 func getDataset() []string {
 	datafiles := [3]string{"artists.json", "names.json", "cities.json"}
@@ -17,7 +18,7 @@ func getDataset() []string {
 
 	// Read list of artists from json
 	for _, filename := range datafiles {
-		jsonFile, _ := os.Open("./data/" + filename)
+		jsonFile, _ := os.Open(DATA_FILE_PATH + filename)
 		defer jsonFile.Close()
 		byteValue, _ := ioutil.ReadAll(jsonFile)	
 		var filedata []string
@@ -32,13 +33,14 @@ func getQuery(c *gin.Context) {
 	query := c.Query("query")
 
 	if (query == "") {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Query cannot be empty"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Query cannot be empty"})
 		return
 	}
 
 	var results []string
 	dataset := getDataset()
 	for _, country := range dataset {
+		// Match if query is prefix, case-insensitive
 		if strings.HasPrefix(strings.ToLower(country), strings.ToLower(query)) {
 			results = append(results, country)
 		}
@@ -51,7 +53,7 @@ func getQuery(c *gin.Context) {
 		c.IndentedJSON(http.StatusOK, gin.H{"data": results})
 		return
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Query not found"})
+	c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Query not found"})
 }
 
 func main() {

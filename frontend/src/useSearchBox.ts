@@ -23,7 +23,7 @@ export default function useSearchBox() {
         const jsonResponse = await response.json();
         if (jsonResponse.data) {
           setResults([...jsonResponse.data]);
-        } else if (jsonResponse.message) {
+        } else if (jsonResponse.error) {
           setResults([]);
         }
         setIsLoading(false);

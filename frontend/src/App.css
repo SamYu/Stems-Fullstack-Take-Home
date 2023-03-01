@@ -3,6 +3,7 @@
   justify-content: center;
   margin-top: 30vh;
   text-align: center;
+  overflow-x: hidden;
 }
 
 .searchBoxContainer {
