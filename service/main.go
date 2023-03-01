@@ -12,6 +12,8 @@ import (
 const MAX_RESULTS = 30
 const DATA_FILE_PATH = "./data/"
 
+var dataset []string
+
 func getDataset() []string {
 	datafiles := [3]string{"artists.json", "names.json", "cities.json"}
 	var dataset []string
@@ -38,7 +40,6 @@ func getQuery(c *gin.Context) {
 	}
 
 	var results []string
-	dataset := getDataset()
 	for _, country := range dataset {
 		// Match if query is prefix, case-insensitive
 		if strings.HasPrefix(strings.ToLower(country), strings.ToLower(query)) {
@@ -57,6 +58,9 @@ func getQuery(c *gin.Context) {
 }
 
 func main() {
+	// Load data into memory
+	dataset = getDataset()
+
 	router := gin.Default()
 	router.Use(cors.Default())
 	router.GET("/search", getQuery)
